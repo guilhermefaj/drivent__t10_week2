@@ -11,7 +11,6 @@ import { handleApplicationErrors } from '@/middlewares';
 import { usersRouter, authenticationRouter, eventsRouter, enrollmentsRouter } from '@/routers';
 
 const app = express();
-
 app
   .use(cors())
   .use(express.json())

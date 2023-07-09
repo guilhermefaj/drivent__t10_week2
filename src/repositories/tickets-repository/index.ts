@@ -53,10 +53,19 @@ async function postTicket(ticket: CreateTicket) {
     }
 }
 
+async function findTicketById(id: number) {
+    return await prisma.ticket.findFirst({
+        where: {
+            id,
+        }
+    })
+}
+
 const ticketsRepository = {
     findManyTickets,
     findTicket,
-    postTicket
+    postTicket,
+    findTicketById
 }
 
 export default ticketsRepository;

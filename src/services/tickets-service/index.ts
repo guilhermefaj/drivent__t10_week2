@@ -34,10 +34,17 @@ async function postTicket(userId: number, ticketTypeId: number) {
     return post;
 }
 
+async function getTicketById(ticketId: number) {
+    const ticket = await ticketsRepository.findTicketById(ticketId)
+
+    return ticket;
+}
+
 const ticketsService = {
     getAllTicketTypes,
     getTickets,
     postTicket,
+    getTicketById
 }
 
 export default ticketsService;

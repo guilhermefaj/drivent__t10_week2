@@ -61,12 +61,23 @@ async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollm
   await addressRepository.upsert(newEnrollment.id, address, address);
 }
 
+async function findEnrollmentById(userId: number) {
+  const enrollment = await enrollmentRepository.findEnrollmentById(userId);
+
+  if (!enrollment) {
+    throw notFoundError();
+  }
+
+  return enrollment;
+}
+
 function getAddressForUpsert(address: CreateAddressParams) {
   return {
     ...address,
     ...(address?.addressDetail && { addressDetail: address.addressDetail }),
   };
 }
+
 
 export type CreateOrUpdateEnrollmentWithAddress = CreateEnrollmentParams & {
   address: CreateAddressParams;
@@ -76,6 +87,7 @@ const enrollmentsService = {
   getOneWithAddressByUserId,
   createOrUpdateEnrollmentWithAddress,
   getAddressFromCEP,
+  findEnrollmentById,
 };
 
 export default enrollmentsService;

@@ -1,4 +1,5 @@
 import { prisma } from "@/config";
+import { Ticket } from "@prisma/client";
 
 async function findManyTickets() {
     try {
@@ -28,9 +29,34 @@ async function findTicket(userId: number) {
 
 }
 
+
+type CreateTicket = Omit<Ticket, "id">;
+
+async function postTicket(ticket: CreateTicket) {
+
+    const { status, enrollmentId, ticketTypeId, createdAt, updatedAt } = ticket
+
+    try {
+        const newTicket = await prisma.ticket.create({
+            data: {
+                status,
+                enrollmentId,
+                ticketTypeId,
+                createdAt,
+                updatedAt
+            },
+        })
+
+        return newTicket
+    } catch (error) {
+        throw new Error(`Can't create new ticket: ${error.message}`)
+    }
+}
+
 const ticketsRepository = {
     findManyTickets,
-    findTicket
+    findTicket,
+    postTicket
 }
 
 export default ticketsRepository;

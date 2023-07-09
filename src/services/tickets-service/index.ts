@@ -1,5 +1,6 @@
 import ticketsRepository from "@/repositories/tickets-repository";
-import { Ticket, TicketType } from "@prisma/client";
+import { Ticket, TicketStatus, TicketType } from "@prisma/client";
+import enrollmentsService from "../enrollments-service";
 
 async function getAllTicketTypes(): Promise<TicketType[]> {
     const ticketTypes = await ticketsRepository.findManyTickets();
@@ -17,9 +18,26 @@ async function getTickets(id: number): Promise<Ticket[]> {
     return ticket;
 }
 
+async function postTicket(userId: number, ticketTypeId: number) {
+    const enrollment = await enrollmentsService.findEnrollmentById(userId);
+
+    const ticket = {
+        status: TicketStatus.RESERVED,
+        enrollmentId: enrollment.id,
+        ticketTypeId: ticketTypeId,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+    }
+
+    const post = await ticketsRepository.postTicket(ticket)
+
+    return post;
+}
+
 const ticketsService = {
     getAllTicketTypes,
-    getTickets
+    getTickets,
+    postTicket,
 }
 
 export default ticketsService;

@@ -18,3 +18,10 @@ export async function getPaymentByTicketId(req: AuthenticatedRequest, res: Respo
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error.message)
     }
 }
+
+export async function postPayment(req: AuthenticatedRequest, res: Response) {
+    const { body, userId } = req;
+
+    const createPayment = await paymentsService.createPayment(body, userId);
+    res.status(httpStatus.OK).send(createPayment);
+}

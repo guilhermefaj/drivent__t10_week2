@@ -12,6 +12,10 @@ async function getAllTicketTypes(): Promise<TicketType[]> {
     return ticketTypes;
 }
 
+async function getTicketTypeById(id: number) {
+    return await ticketsRepository.findTicketTypeById(id);
+}
+
 async function getTickets(id: number): Promise<Ticket[]> {
     const ticket = await ticketsRepository.findTicket(id);
 
@@ -42,6 +46,7 @@ async function getTicketById(ticketId: number) {
 
 const ticketsService = {
     getAllTicketTypes,
+    getTicketTypeById,
     getTickets,
     postTicket,
     getTicketById

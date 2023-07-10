@@ -9,6 +9,14 @@ async function findManyTickets() {
     }
 }
 
+async function findTicketTypeById(id: number) {
+    return await prisma.ticketType.findFirst({
+        where: {
+            id,
+        }
+    })
+}
+
 async function findTicket(userId: number) {
     try {
         const tickets = await prisma.ticket.findMany({
@@ -61,11 +69,24 @@ async function findTicketById(id: number) {
     })
 }
 
+async function updatePaymentStatus(id: number) {
+    await prisma.ticket.update({
+        data: {
+            status: 'PAID',
+        },
+        where: {
+            id,
+        }
+    })
+}
+
 const ticketsRepository = {
     findManyTickets,
+    findTicketTypeById,
     findTicket,
     postTicket,
-    findTicketById
+    findTicketById,
+    updatePaymentStatus,
 }
 
 export default ticketsRepository;
